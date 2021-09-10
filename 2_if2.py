@@ -34,6 +34,5 @@ def main():
     compare_strings(first_word = 'Python', second_word = 'Learn')
     compare_strings(first_word = 'Learn', second_word = 'Python')
 
-
 if __name__ == "__main__":
     main()
