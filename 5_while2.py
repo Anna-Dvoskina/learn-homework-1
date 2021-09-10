@@ -28,9 +28,7 @@ def ask_user(answers_dict):
     while True:
         user_question = input("Спроси меня что-нибудь: ")
         if user_question in questions_and_answers.keys():
-            print(questions_and_answers[user_question])  
-        else:
-          print('Я пока не знаю как ответит')    
+            print(questions_and_answers[user_question])    
 
 if __name__ == "__main__":
     ask_user(questions_and_answers)
