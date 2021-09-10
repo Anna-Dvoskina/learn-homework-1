@@ -15,13 +15,22 @@
     
 """
 
-questions_and_answers = {}
-
+questions_and_answers = {
+    "Как дела?": "Хорошо!", 
+    "Что делаешь?": "Программирую",
+    "Какой язык программирования ты учишь?": "Python",
+    "Какую тему ты сейчас изучаешь?": "Оператор While"
+}
 def ask_user(answers_dict):
     """
     Замените pass на ваш код
     """
-    pass
-    
+    while True:
+        user_question = input("Спроси меня что-нибудь: ")
+        if user_question in questions_and_answers.keys():
+            print(questions_and_answers[user_question])  
+        else:
+          print('Я пока не знаю как ответит')    
+
 if __name__ == "__main__":
     ask_user(questions_and_answers)
