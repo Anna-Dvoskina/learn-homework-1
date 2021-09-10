@@ -14,23 +14,26 @@
   и выводя на экран результаты
 
 """
+def compare_strings(first_word, second_word):
+    if not(isinstance(first_word, str) or isinstance(second_word, str)):
+        print(0)
+    elif first_word == second_word:
+        print(1)
+    elif first_word != second_word and len(first_word) > len(second_word):
+        print(2)
+    elif first_word != second_word and 'learn' in first_word.lower():
+        print(3)
 
-def main(FirstWord, SecondWord):
+def main():
     """
     Эта функция вызывается автоматически при запуске скрипта в консоли
     В ней надо заменить pass на ваш код
     """
-    if not(type(FirstWord) == str and type(SecondWord) == str):
-        print(0)
-    elif FirstWord == SecondWord:
-        print(1)
-    elif FirstWord != SecondWord and len(FirstWord) > len(SecondWord):
-        print(2)
-    elif FirstWord != SecondWord and 'learn' in FirstWord.lower():
-        print(3)
+    compare_strings(first_word = 5, second_word = 4)
+    compare_strings(first_word = 'Python', second_word = 'Python')
+    compare_strings(first_word = 'Python', second_word = 'Learn')
+    compare_strings(first_word = 'Learn', second_word = 'Python')
+
 
 if __name__ == "__main__":
-    main(FirstWord = 5, SecondWord = 4)
-    main(FirstWord = 'Python', SecondWord = 'Python')
-    main(FirstWord = 'Python', SecondWord = 'Learn')
-    main(FirstWord = 'Learn', SecondWord = 'Python')
+    main()
