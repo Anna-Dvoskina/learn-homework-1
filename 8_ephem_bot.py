@@ -13,8 +13,11 @@
 
 """
 import logging
-
+import ephem
+from datetime import datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
+current_date = (datetime.date(datetime.now()))
 
 logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
@@ -32,18 +35,23 @@ PROXY = {
 
 def greet_user(update, context):
     text = 'Вызван /start'
-    print(text)
-    update.message.reply_text(text)
+    update.message.reply_text('Привет! Напиши название планеты в формате: /planet Mars')
 
 
 def talk_to_me(update, context):
-    user_text = update.message.text
-    print(user_text)
-    update.message.reply_text(text)
+    try:
+        user_text = update.message.text.split()
+        planet = getattr(ephem, user_text[1])()
+        planet.compute(ephem.Date(current_date))
+        const = ephem.constellation(planet)
+        print(const)
+        update.message.reply_text(const)
+    except AttributeError:
+        print(update.message.reply_text('Такую планету еще не открыли'))    
 
 
 def main():
-    mybot = Updater("КЛЮЧ, КОТОРЫЙ НАМ ВЫДАЛ BotFather", request_kwargs=PROXY, use_context=True)
+    mybot = Updater("1940519188:AAFtdXOZrb8j8PydiGJphA6UdWAfE05TBr0", request_kwargs=PROXY, use_context=True)
 
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
