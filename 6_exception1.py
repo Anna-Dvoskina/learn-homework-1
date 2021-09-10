@@ -22,6 +22,7 @@ def hello_user():
         except KeyboardInterrupt:
             print('Пока')
             break
+        
     
 if __name__ == "__main__":
     hello_user()
