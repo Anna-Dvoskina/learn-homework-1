@@ -49,13 +49,23 @@ def talk_to_me(update, context):
     except AttributeError:
         print(update.message.reply_text('Такую планету еще не открыли'))    
 
+def moon(update, context):
+    
+    user_text = update.message.text.split()
+    if len(user_text) == 1:
+        update.message.reply_text('Привет! Напиши дату в формате 2021-09-11')
+    else:    
+        update.message.reply_text(user_text[1])
+        # moon = ephem.next_full_moon(date)
 
 def main():
     mybot = Updater("1940519188:AAFtdXOZrb8j8PydiGJphA6UdWAfE05TBr0", request_kwargs=PROXY, use_context=True)
 
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
+    dp.add_handler(CommandHandler("moon", moon))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
+    
 
     mybot.start_polling()
     mybot.idle()
