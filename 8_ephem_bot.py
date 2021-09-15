@@ -14,6 +14,7 @@
 """
 import logging
 import ephem
+import copy
 from datetime import datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import re
@@ -102,42 +103,52 @@ def calc(update, context):
                     return update.message.reply_text('Делить на ноль нельзя') 
         update.message.reply_text(calcfunc(x,y,z))             
 
+def myname(update, context):
+    username = update.message.chat.username
+    update.message.reply_text(username)
 
-
-
-all_cities = ['Moscow', 'NewYork', 'Kazan', 'Novgorod', 'Kiev', 'Deli', 'Vladivostok', 'Krasnoyarsk']
+total_cities = [
+'Moscow', 'NewYork', 'Berlin', 'Paris', 'Deli', 'Istanbul', 'Ankara', 'TelAviv', 'Shanghai',
+'Beijing', 'Vienna', 'Sofia', 'Havana', 'Athens', 'Tbilisi', 'Riga', 'Limassol'
+]
 
 def cities_game(update, context):
+
+    username = update.message.chat.username
+    all_cities = copy.copy(total_cities)
+    users_cities = {username: all_cities}
     user_text = update.message.text.split()
+
     if len(user_text) == 1:
-        update.message.reply_text('Привет! Напиши название города!')
+        update.message.reply_text('Напиши название города!')
     else:
         city =  user_text[1]
-        if city in all_cities:
+        if city in users_cities[username]:
             last_letter = city[-1]
-            all_cities.remove(city)
-            for new_city in all_cities:
-                if new_city[0].lower() == last_letter.lower():
+            users_cities[username].remove(city)
+
+            count = 0
+            for new_city in users_cities[username]:
+                if new_city[0].lower() == last_letter:
+                    count += 1
                     update.message.reply_text(new_city) 
-                    all_cities.remove(new_city)
+                    users_cities[username].remove(new_city)
                     break
-                # else:
-                #     update.message.reply_text(f'на букву {last_letter} больше городов нет')
-                #     break 
+            if count == 0: 
+                update.message.reply_text('Больше городов на эту букву нет')
+               
         else:
-            update.message.reply_text('Такого города я не знаю')                        
+            update.message.reply_text('Я не знаю такого города')                        
                 
 
         # cities_for_game = all_cities
-
-
-
 
 def main():
     mybot = Updater("1940519188:AAFtdXOZrb8j8PydiGJphA6UdWAfE05TBr0", request_kwargs=PROXY, use_context=True)
 
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
+    dp.add_handler(CommandHandler("myname", myname))
     dp.add_handler(CommandHandler("planet", planet))
     dp.add_handler(CommandHandler("moon", moon))
     dp.add_handler(CommandHandler("wordcount", wordcount))
