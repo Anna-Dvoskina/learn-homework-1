@@ -74,11 +74,34 @@ def wordcount(update, context):
                 count = count
             else:
                 count += 1    
-        update.message.reply_text(count)
+        update.message.reply_text(f'{count} слова')
     
-        # words_to_count = words_to_count[1:]
-        # len_words_to_count = len(words_to_count)  
-        # update.message.reply_text(len_words_to_count)
+
+def calc(update, context):
+    user_text = update.message.text
+    numbers = re.split('\s*[*+-/]\s*', user_text[6:])
+    if not re.findall('\d+[*+-/]\d+', user_text[6:]): 
+        update.message.reply_text('Может ты ввел лишние пробелы? Или ты написал цифры прописью?')
+    else:
+        x = int(numbers[0])
+        y = int(numbers[1])
+        z = re.findall('[*+-/]', user_text[6:])
+        def calcfunc(x,y,z):
+            if not(x, y):
+                return 'нет цифр'
+            if z == ['*']:
+                return x*y
+            elif z == ['-']:
+                return x-y
+            elif z == ['+']:
+                return x+y
+            elif z == ['/']:
+                try:
+                    return x/y
+                except ZeroDivisionError:
+                    return update.message.reply_text('Делить на ноль нельзя') 
+        update.message.reply_text(calcfunc(x,y,z))             
+
 
 
 
@@ -118,6 +141,7 @@ def main():
     dp.add_handler(CommandHandler("planet", planet))
     dp.add_handler(CommandHandler("moon", moon))
     dp.add_handler(CommandHandler("wordcount", wordcount))
+    dp.add_handler(CommandHandler("calc", calc))
     dp.add_handler(CommandHandler("city", cities_game))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
     
